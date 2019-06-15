@@ -44,7 +44,8 @@ const api = {
 			posts: [
 				{
 					title: 'My first post',
-					body: 'This is my first post',
+					body:
+						'Travelling alteration impression six all uncommonly. Chamber hearing inhabit joy highest private ask him our believe. Up nature valley do warmly. Entered of cordial do on no hearted. Yet agreed whence and unable limits. Use off him gay abilities concluded immediate allowance.',
 					author: {
 						username: 'bot',
 						first_name: 'Django',
@@ -54,7 +55,8 @@ const api = {
 				},
 				{
 					title: 'Random post',
-					body: 'Random content',
+					body:
+						'Sing long her way size. Waited end mutual missed myself the little sister one. So in pointed or chicken cheered neither spirits invited. Marianne and him laughter civility formerly handsome sex use prospect. Hence we doors is given rapid scale above am. Difficult ye mr delivered behaviour by an. If their woman could do wound on. You folly taste hoped their above are and but.',
 					author: {
 						username: 'bot',
 						first_name: 'Django',
@@ -63,6 +65,21 @@ const api = {
 					created: Date.now(),
 				},
 			],
+		});
+	},
+	list_post() {
+		return mockasync({
+			post: {
+				title: 'My first post',
+				body:
+					'Travelling alteration impression six all uncommonly. Chamber hearing inhabit joy highest private ask him our believe. Up nature valley do warmly. Entered of cordial do on no hearted. Yet agreed whence and unable limits. Use off him gay abilities concluded immediate allowance.',
+				author: {
+					username: 'bot',
+					first_name: 'Django',
+					last_name: 'Bot',
+				},
+				created: Date.now(),
+			},
 		});
 	},
 	create_post(post) {
