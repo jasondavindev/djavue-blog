@@ -1,7 +1,15 @@
 <template>
   <v-toolbar color="info" dark fixed app clipped-right>
-    <v-toolbar-title>Djavue Blog</v-toolbar-title>
+    <v-toolbar-title @click.stop="toIndex">Djavue Blog</v-toolbar-title>
     <v-spacer></v-spacer>
+    <v-btn
+      outline
+      round
+      dark
+      :ripple="false"
+      :to="{ name: 'create-post' }"
+      v-if="logged_user"
+    >Postar</v-btn>
     <v-btn
       v-if="!logged_user"
       flat
@@ -69,6 +77,9 @@ export default {
         this.$store.commit("SET_LOGGED_USER", null);
         Snacks.show(this.$store, { text: "Até logo!" });
       });
+    },
+    toIndex() {
+      this.$router.push({ name: "index" });
     }
   }
 };

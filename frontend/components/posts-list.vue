@@ -1,6 +1,7 @@
 <template>
   <v-container fluid grid-list-lg>
     <v-layout row wrap>
+      <center-progress :condition="posts" size="100"></center-progress>
       <template v-for="post in posts">
         <v-flex xs12>
           <v-card color="white">
@@ -30,11 +31,16 @@
 
 <script>
 import AppApi from "~apijs";
+import centerProgress from "~/components/center-progress-circular";
 
 export default {
+  components: {
+    centerProgress
+  },
+
   data() {
     return {
-      posts: [],
+      posts: null,
       loading: false
     };
   },

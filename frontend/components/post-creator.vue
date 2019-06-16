@@ -5,18 +5,10 @@
         <h2>Criar Post</h2>
       </v-card-title>
       <v-card-text>
-        <div class="field">
-          <v-text-field
-            v-model="title"
-            ref="title"
-            label="Título"
-            :rules="[rules.required]"
-            single-line
-          ></v-text-field>
-        </div>
-        <div class="field">
+        <v-container fluid>
+          <v-text-field v-model="title" ref="title" label="Título" :rules="[rules.required]"></v-text-field>
           <v-text-field v-model="body" ref="body" label="Texto" :rules="[rules.required]" textarea></v-text-field>
-        </div>
+        </v-container>
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>

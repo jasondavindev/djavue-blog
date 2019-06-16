@@ -43,14 +43,8 @@
     <v-flex xs12>
       <v-card color="white">
         <v-card-text>
-          <v-progress-circular
-            v-if="!comments.length"
-            style="display: block; margin: 0 auto;"
-            :size="50"
-            indeterminate
-            color="primary"
-          ></v-progress-circular>
-          <comment-list v-if="comments.length" :comments="comments"></comment-list>
+          <center-progress :condition="comments" size="50"></center-progress>
+          <comment-list v-if="comments && comments.length" :comments="comments"></comment-list>
         </v-card-text>
       </v-card>
     </v-flex>
@@ -60,10 +54,12 @@
 <script>
 import AppApi from "~apijs";
 import commentList from "~/components/comment-list";
+import centerProgress from "~/components/center-progress-circular";
 
 export default {
   components: {
-    commentList
+    commentList,
+    centerProgress
   },
 
   props: ["post"],
@@ -71,7 +67,7 @@ export default {
   data() {
     return {
       comment: "",
-      comments: [],
+      comments: null,
       commenting: false,
       formHasError: false
     };

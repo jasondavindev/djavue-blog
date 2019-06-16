@@ -20,7 +20,7 @@ module.exports = {
   ],
   loading: { color: '#3B8070' },
   router: {
-    middleware: ['fwdcookies', 'auth'],
+    middleware: ['fwdcookies', 'auth', 'guard_routes'],
   },
   build: {
     vendor: [

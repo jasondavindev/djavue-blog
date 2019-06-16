@@ -1,7 +1,7 @@
 <template>
   <v-app id="inspire">
     <toolbar :state="layout"/>
-    <v-content>
+    <v-content class="grey lighten-3">
       <v-container fluid>
         <nuxt></nuxt>
       </v-container>
