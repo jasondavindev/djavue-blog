@@ -30,7 +30,13 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="primary" flat @click="sendComment">Comentar</v-btn>
+          <v-btn
+            color="primary"
+            flat
+            @click="sendComment"
+            :loading="commenting"
+            :disabled="commenting"
+          >Comentar</v-btn>
         </v-card-actions>
       </v-card>
     </v-flex>
@@ -67,7 +73,8 @@ export default {
     return {
       comment: "",
       comments: [],
-      error: undefined
+      error: undefined,
+      commenting: false
     };
   },
 
@@ -102,10 +109,15 @@ export default {
 
     async sendComment() {
       if (this.validate()) {
+        this.commenting = true;
+
         try {
           const { data } = await AppApi.save_comment({ comment: this.comment });
           this.comments.unshift(data);
-        } catch (error) {}
+        } catch (error) {
+        } finally {
+          this.commenting = false;
+        }
       }
     },
 
