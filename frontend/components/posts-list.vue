@@ -55,7 +55,7 @@ export default {
 
       try {
         const { data } = await AppApi.list_posts();
-        this.posts = data.posts;
+        this.posts = data.posts.sort((a, b) => b.created - a.created);
       } catch (error) {
       } finally {
         this.loading = false;

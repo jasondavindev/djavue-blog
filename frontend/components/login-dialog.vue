@@ -1,12 +1,12 @@
 <template>
   <v-dialog v-model="visible" max-width="500px">
     <v-card>
-        <v-card-title>Log in</v-card-title>
+        <v-card-title>Iniciar sessão</v-card-title>
         <v-card-text>
           <v-container fluid>
-            <v-text-field label="Username" required v-model="username"/>
-            <v-text-field label="Password" type="password" required v-model="password" @keyup.enter="login()"/>
-            <small style="color: red;" v-if="error">Wrong user or password</small>
+            <v-text-field label="Nome de usuário" required v-model="username"/>
+            <v-text-field label="Senha" type="password" required v-model="password" @keyup.enter="login()"/>
+            <small style="color: red;" v-if="error">Usuário ou senha incorretos!</small>
           </v-container>
         </v-card-text>
         <v-btn class="blue--text darken-1" flat @click="close()">Cancelar</v-btn>

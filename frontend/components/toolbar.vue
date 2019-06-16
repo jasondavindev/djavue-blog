@@ -10,14 +10,8 @@
       :to="{ name: 'create-post' }"
       v-if="logged_user"
     >Postar</v-btn>
-    <v-btn
-      v-if="!logged_user"
-      flat
-      dark
-      ripple
-      class="ma-0 ml-5"
-      @click.stop="open_login_dialog()"
-    >Login</v-btn>
+    <v-btn v-if="!logged_user" flat dark ripple @click.stop="goToSignUp()">Cadastrar</v-btn>
+    <v-btn v-if="!logged_user" flat dark ripple @click.stop="openLoginDialog()">Entrar</v-btn>
     <v-menu v-if="logged_user" offset-y>
       <v-btn icon slot="activator" class="ma-0 ml-5">
         <v-avatar size="36px">
@@ -69,13 +63,16 @@ export default {
   computed: Object.assign({}, Vuex.mapGetters(["logged_user"])),
   props: ["state"],
   methods: {
-    open_login_dialog() {
+    openLoginDialog() {
       this.$refs.login_dialog.open();
+    },
+    goToSignUp() {
+      this.$router.push({ name: "signup" });
     },
     logout() {
       AppApi.logout().then(() => {
         this.$store.commit("SET_LOGGED_USER", null);
-        Snacks.show(this.$store, { text: "Até logo!" });
+        // Snacks.show(this.$store, { text: "Até logo!" });
       });
     },
     toIndex() {

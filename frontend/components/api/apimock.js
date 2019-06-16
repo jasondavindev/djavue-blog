@@ -62,7 +62,7 @@ const api = {
 						first_name: 'Django',
 						last_name: 'Bot',
 					},
-					created: Date.now(),
+					created: Date.now() + 1000,
 				},
 			],
 		});
@@ -91,7 +91,7 @@ const api = {
 					first_name: logged_user.first_name,
 					last_name: logged_user.last_name,
 				},
-				id: 1
+				id: 1,
 			})
 		);
 	},
@@ -133,6 +133,14 @@ const api = {
 				comment
 			)
 		);
+	},
+	create_account(user) {
+		return mockasync({
+			username: user.username,
+			first_name: user.firstname,
+			last_name: user.lastname,
+			email: user.email,
+		});
 	},
 };
 
