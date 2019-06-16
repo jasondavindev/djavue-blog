@@ -15,8 +15,7 @@
             </v-card-title>
             <v-divider light></v-divider>
             <v-card-actions>
-              <v-btn flat>Continuar lendo</v-btn>
-              <v-btn color="info">Comentar</v-btn>
+              <v-btn flat color="primary" :to="{ name: 'posts-id', params: {id: post.id }}">Continuar lendo</v-btn>
             </v-card-actions>
           </v-card>
         </v-flex>

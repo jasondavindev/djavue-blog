@@ -17,23 +17,104 @@
     <v-flex xs12>
       <v-card color="white">
         <v-card-text>
-          <v-text-field name="input-1" label="Comentário" textarea></v-text-field>
+          <v-text-field
+            v-model="comment"
+            name="input-1"
+            label="Comentário"
+            :counter="400"
+            maxlength="400"
+            textarea
+          ></v-text-field>
+
+          <p class="red--text" v-if="error">{{ error }}</p>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="primary" flat @click="comment">Comentar</v-btn>
+          <v-btn color="primary" flat @click="sendComment">Comentar</v-btn>
         </v-card-actions>
+      </v-card>
+    </v-flex>
+
+    <v-flex xs12>
+      <v-card color="white">
+        <v-card-text>
+          <v-progress-circular
+            v-if="!comments.length"
+            style="display: block; margin: 0 auto;"
+            :size="50"
+            indeterminate
+            color="primary"
+          ></v-progress-circular>
+          <comment-list v-if="comments.length" :comments="comments"></comment-list>
+        </v-card-text>
       </v-card>
     </v-flex>
   </div>
 </template>
 
 <script>
+import AppApi from "~apijs";
+import commentList from "~/components/comment-list";
+
 export default {
+  components: {
+    commentList
+  },
+
   props: ["post"],
 
+  data() {
+    return {
+      comment: "",
+      comments: [],
+      error: undefined
+    };
+  },
+
+  mounted() {
+    this.getComments();
+  },
+
   methods: {
-    comment() {}
+    validComment(comment) {
+      if (this.comment.length < 1) return false;
+
+      return true;
+    },
+
+    validSection() {
+      if (!this.$store.getters.logged_user) {
+        this.error = "Você precisa estar logado para fazer um comentário.";
+        return false;
+      }
+
+      this.error = undefined;
+
+      return true;
+    },
+
+    validate() {
+      if (!this.validComment(this.comment)) return;
+      if (!this.validSection()) return;
+
+      return true;
+    },
+
+    async sendComment() {
+      if (this.validate()) {
+        try {
+          const { data } = await AppApi.save_comment({ comment: this.comment });
+          this.comments.unshift(data);
+        } catch (error) {}
+      }
+    },
+
+    async getComments() {
+      try {
+        const { data } = await AppApi.list_comments();
+        this.comments = data.comments.sort((a, b) => b.created - a.created);
+      } catch (error) {}
+    }
   }
 };
 </script>

@@ -43,6 +43,7 @@ const api = {
 		return mockasync({
 			posts: [
 				{
+					id: 1,
 					title: 'My first post',
 					body:
 						'Travelling alteration impression six all uncommonly. Chamber hearing inhabit joy highest private ask him our believe. Up nature valley do warmly. Entered of cordial do on no hearted. Yet agreed whence and unable limits. Use off him gay abilities concluded immediate allowance.',
@@ -54,6 +55,7 @@ const api = {
 					created: Date.now(),
 				},
 				{
+					id: 2,
 					title: 'Random post',
 					body:
 						'Sing long her way size. Waited end mutual missed myself the little sister one. So in pointed or chicken cheered neither spirits invited. Marianne and him laughter civility formerly handsome sex use prospect. Hence we doors is given rapid scale above am. Difficult ye mr delivered behaviour by an. If their woman could do wound on. You folly taste hoped their above are and but.',
@@ -97,6 +99,42 @@ const api = {
 					},
 				}
 			)
+		);
+	},
+	list_comments() {
+		return mockasync({
+			comments: [
+				{
+					author: {
+						username: 'johncena',
+						first_name: 'John',
+						last_name: 'Cena',
+					},
+					comment: 'Oh yeah!',
+					created: Date.now()
+				},
+				{
+					author: {
+						username: 'therock',
+						first_name: 'Dwayne',
+						last_name: 'Johnson',
+					},
+					comment: 'Easy peasy lemon squeezy!',
+					created: Date.now() + 1000
+				}
+			]
+		})
+	},
+	save_comment(comment) {
+		return mockasync(
+			Object.assign({
+				created: Date.now(),
+				author: {
+					username: logged_user.username,
+					first_name: logged_user.first_name,
+					last_name: logged_user.last_name,
+				},
+			}, comment)
 		);
 	},
 };

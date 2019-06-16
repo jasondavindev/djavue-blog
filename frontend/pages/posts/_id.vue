@@ -32,7 +32,7 @@ export default {
       try {
         const { data } = await AppApi.list_post(id);
         this.post = data.post;
-      } catch (error) {console.error(error)}
+      } catch (error) {}
     }
   }
 };
