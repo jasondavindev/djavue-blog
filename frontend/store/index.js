@@ -22,6 +22,9 @@ const store = () => new Vuex.Store({
     snack (state) {
       return state.snack
     }
+  },
+  actions: {
+    nuxtServerInit({commit}, {req}) {}
   }
 })
 

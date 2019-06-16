@@ -19,21 +19,20 @@
         <v-card-text>
           <v-text-field
             v-model="comment"
-            name="input-1"
+            ref="comment"
+            :rules="[required, logged]"
             label="Comentário"
             :counter="400"
             maxlength="400"
             textarea
           ></v-text-field>
-
-          <p class="red--text" v-if="error">{{ error }}</p>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
             color="primary"
             flat
-            @click="sendComment"
+            @click="submit"
             :loading="commenting"
             :disabled="commenting"
           >Comentar</v-btn>
@@ -73,8 +72,8 @@ export default {
     return {
       comment: "",
       comments: [],
-      error: undefined,
-      commenting: false
+      commenting: false,
+      formHasError: false
     };
   },
 
@@ -82,42 +81,52 @@ export default {
     this.getComments();
   },
 
-  methods: {
-    validComment(comment) {
-      if (this.comment.length < 1) return false;
+  computed: {
+    form() {
+      return {
+        comment: this.comment
+      };
+    }
+  },
 
-      return true;
+  methods: {
+    required(value) {
+      return !!value || "Preencha este campos";
     },
 
-    validSection() {
-      if (!this.$store.getters.logged_user) {
-        this.error = "Você precisa estar logado para fazer um comentário.";
-        return false;
-      }
-
-      this.error = undefined;
-
-      return true;
+    logged() {
+      return (
+        !!this.$store.getters.logged_user ||
+        "Você precisa estar logado para fazer um comentário"
+      );
     },
 
     validate() {
-      if (!this.validComment(this.comment)) return;
-      if (!this.validSection()) return;
+      this.formHasError = false;
 
-      return true;
+      Object.keys(this.form).forEach(prop => {
+        if (!this.form[prop]) this.formHasError = true;
+
+        this.$refs[prop].validate(true);
+      });
+    },
+
+    submit() {
+      this.validate();
+      if (this.formHasError) return;
+
+      this.sendComment();
     },
 
     async sendComment() {
-      if (this.validate()) {
-        this.commenting = true;
+      this.commenting = true;
 
-        try {
-          const { data } = await AppApi.save_comment({ comment: this.comment });
-          this.comments.unshift(data);
-        } catch (error) {
-        } finally {
-          this.commenting = false;
-        }
+      try {
+        const { data } = await AppApi.save_comment({ comment: this.comment });
+        this.comments.unshift(data);
+      } catch (error) {
+      } finally {
+        this.commenting = false;
       }
     },
 
