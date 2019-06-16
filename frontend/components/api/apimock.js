@@ -37,8 +37,6 @@ const api = {
 				: { authenticated: false }
 		);
 	},
-	add_todo() {},
-	list_todos() {},
 	list_posts() {
 		return mockasync({
 			posts: [
@@ -86,19 +84,15 @@ const api = {
 	},
 	create_post(post) {
 		return mockasync(
-			Object.assign(
-				{
-					data: post,
+			Object.assign(post, {
+				created: Date.now(),
+				author: {
+					username: logged_user.username,
+					first_name: logged_user.first_name,
+					last_name: logged_user.last_name,
 				},
-				{
-					created: Date.now(),
-					author: {
-						username: logged_user.username,
-						first_name: logged_user.first_name,
-						last_name: logged_user.last_name,
-					},
-				}
-			)
+				id: 1
+			})
 		);
 	},
 	list_comments() {
@@ -111,7 +105,7 @@ const api = {
 						last_name: 'Cena',
 					},
 					comment: 'Oh yeah!',
-					created: Date.now()
+					created: Date.now(),
 				},
 				{
 					author: {
@@ -120,21 +114,24 @@ const api = {
 						last_name: 'Johnson',
 					},
 					comment: 'Easy peasy lemon squeezy!',
-					created: Date.now() + 1000
-				}
-			]
-		})
+					created: Date.now() + 1000,
+				},
+			],
+		});
 	},
 	save_comment(comment) {
 		return mockasync(
-			Object.assign({
-				created: Date.now(),
-				author: {
-					username: logged_user.username,
-					first_name: logged_user.first_name,
-					last_name: logged_user.last_name,
+			Object.assign(
+				{
+					created: Date.now(),
+					author: {
+						username: logged_user.username,
+						first_name: logged_user.first_name,
+						last_name: logged_user.last_name,
+					},
 				},
-			}, comment)
+				comment
+			)
 		);
 	},
 };

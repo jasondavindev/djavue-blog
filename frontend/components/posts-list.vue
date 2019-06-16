@@ -15,7 +15,11 @@
             </v-card-title>
             <v-divider light></v-divider>
             <v-card-actions>
-              <v-btn flat color="primary" :to="{ name: 'posts-id', params: {id: post.id }}">Continuar lendo</v-btn>
+              <v-btn
+                flat
+                color="primary"
+                :to="{ name: 'posts-id', params: {id: post.id }}"
+              >Continuar lendo</v-btn>
             </v-card-actions>
           </v-card>
         </v-flex>
@@ -49,7 +53,6 @@ export default {
       } catch (error) {
       } finally {
         this.loading = false;
-        console.log(this.posts);
       }
     }
   },
