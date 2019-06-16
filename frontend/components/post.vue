@@ -20,7 +20,7 @@
           <v-text-field
             v-model="comment"
             ref="comment"
-            :rules="[required, logged]"
+            :rules="[fieldRequired, logged]"
             label="Comentário"
             :counter="400"
             maxlength="400"
@@ -40,11 +40,12 @@
       </v-card>
     </v-flex>
 
-    <v-flex xs12>
+    <center-progress :condition="comments" size="50"></center-progress>
+
+    <v-flex xs12 v-if="comments && comments.length">
       <v-card color="white">
         <v-card-text>
-          <center-progress :condition="comments" size="50"></center-progress>
-          <comment-list v-if="comments && comments.length" :comments="comments"></comment-list>
+          <comment-list :comments="comments"></comment-list>
         </v-card-text>
       </v-card>
     </v-flex>
@@ -68,8 +69,7 @@ export default {
     return {
       comment: "",
       comments: null,
-      commenting: false,
-      formHasError: false
+      commenting: false
     };
   },
 
@@ -86,30 +86,9 @@ export default {
   },
 
   methods: {
-    required(value) {
-      return !!value || "Preencha este campos";
-    },
-
-    logged() {
-      return (
-        !!this.$store.getters.logged_user ||
-        "Você precisa estar logado para fazer um comentário"
-      );
-    },
-
-    validate() {
-      this.formHasError = false;
-
-      Object.keys(this.form).forEach(prop => {
-        if (!this.form[prop]) this.formHasError = true;
-
-        this.$refs[prop].validate(true);
-      });
-    },
 
     submit() {
-      this.validate();
-      if (this.formHasError) return;
+      if (!this.validateForm()) return;
 
       this.sendComment();
     },

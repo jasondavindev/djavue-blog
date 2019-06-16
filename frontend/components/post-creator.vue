@@ -6,8 +6,8 @@
       </v-card-title>
       <v-card-text>
         <v-container fluid>
-          <v-text-field v-model="title" ref="title" label="Título" :rules="[rules.required]"></v-text-field>
-          <v-text-field v-model="body" ref="body" label="Texto" :rules="[rules.required]" textarea></v-text-field>
+          <v-text-field v-model="title" ref="title" label="Título" :rules="[fieldRequired]"></v-text-field>
+          <v-text-field v-model="body" ref="body" label="Texto" :rules="[fieldRequired]" textarea></v-text-field>
         </v-container>
       </v-card-text>
       <v-card-actions>
@@ -32,10 +32,6 @@ export default {
     return {
       title: null,
       body: null,
-      rules: {
-        required: value => !!value || "Preencha este campo"
-      },
-      formHasError: true,
       creating: false
     };
   },
@@ -50,19 +46,9 @@ export default {
   },
 
   methods: {
-    validate() {
-      this.formHasError = false;
-
-      Object.keys(this.form).forEach(prop => {
-        if (!this.form[prop]) this.formHasError = true;
-
-        this.$refs[prop].validate(true);
-      });
-    },
 
     submit() {
-      this.validate();
-      if (this.formHasError) return;
+      if (!this.validateForm()) return;
 
       this.submitPost();
     },

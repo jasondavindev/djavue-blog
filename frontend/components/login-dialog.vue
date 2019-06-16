@@ -9,8 +9,8 @@
             <small style="color: red;" v-if="error">Wrong user or password</small>
           </v-container>
         </v-card-text>
-        <v-btn class="blue--text darken-1" flat @click="close()">Cancel</v-btn>
-        <v-btn class="blue--text darken-1" flat @click="login()" :loading="loading" :disabled="loading">Login</v-btn>
+        <v-btn class="blue--text darken-1" flat @click="close()">Cancelar</v-btn>
+        <v-btn class="blue--text darken-1" flat @click="login()" :loading="loading" :disabled="loading">Entrar</v-btn>
     </v-card>
   </v-dialog>
 </template>

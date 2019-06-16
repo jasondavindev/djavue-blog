@@ -1,15 +1,17 @@
 <template>
-  <v-progress-circular
-    v-if="!condition"
-    style="display: block; margin: 0 auto;"
-    :size="size"
-    indeterminate
-    color="primary"
-  ></v-progress-circular>
+  <v-container v-if="!condition">
+    <v-layout justify-center>
+      <v-progress-circular
+        :size="size"
+        indeterminate
+        color="primary"
+      ></v-progress-circular>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>
 export default {
-  props: ['condition', 'size']
+  props: ["condition", "size"]
 };
 </script>

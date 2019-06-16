@@ -42,6 +42,7 @@ module.exports = {
   },
   plugins: [
     '~plugins/vuetify.js',
+    '~mixins/fields.js',
     {src: '~plugins/vue2-filters', ssr: false},
   ]
 }
