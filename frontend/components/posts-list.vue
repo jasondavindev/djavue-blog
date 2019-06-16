@@ -1,19 +1,34 @@
 <template>
   <v-container fluid grid-list-lg>
+    <v-layout row wrap justify-center v-if="posts && !posts.length">
+      <v-flex xs12 md8 lg6>
+        <v-card>
+          <v-card-text>
+            <p class="text-xs-center grey--text subheading mb-0">Ops! Não encontramos nenhum post :-(</p>
+          </v-card-text>
+        </v-card>
+      </v-flex>
+    </v-layout>
+
     <v-layout row wrap>
-      <center-progress :condition="!posts" size="100"></center-progress>
+      <center-progress :condition="!posts" size="60"></center-progress>
       <template v-for="post in posts">
         <v-flex xs12>
           <v-card color="white">
-            <v-card-title primary-title>
-              <div class="post-content">
-                <div class="post-description">
-                  <span class="post-title">{{ post.title }}</span>
-                  <span class="post-author grey--text lighten-2">@{{ post.author.username }}</span>
-                </div>
-                <p class="subheading">{{ post.body | partBody }}</p>
-              </div>
+            <v-card-title primary-title class="pb-0">
+              <v-flex xs12 class="ma-0 pa-0">
+                <p class="subheading mb-2">
+                  {{ post.author.first_name }} {{ post.author.last_name }}
+                  <span
+                    class="grey--text"
+                  >@{{ post.author.username }}</span>
+                </p>
+              </v-flex>
+              <p class="display-1">{{ post.title }}</p>
             </v-card-title>
+            <v-card-text>
+              <p class="subheading">{{ post.body | partBody }}</p>
+            </v-card-text>
             <v-divider light></v-divider>
             <v-card-actions>
               <v-btn
@@ -74,19 +89,3 @@ export default {
   }
 };
 </script>
-
-<style>
-.post-description {
-  margin-bottom: 10px;
-  line-height: 32px;
-  display: inline-flex;
-}
-.post-description .post-title {
-  font-size: 32px;
-  font-weight: bold;
-}
-.post-description .post-author {
-  font-size: 24px;
-  margin-left: 5px;
-}
-</style>

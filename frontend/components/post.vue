@@ -2,15 +2,20 @@
   <div class="post">
     <v-flex xs12>
       <v-card color="white">
-        <v-card-title primary-title>
-          <div class="post-content">
-            <div class="post-description">
-              <span class="post-title">{{ post.title }}</span>
-              <span class="post-author grey--text lighten-2">@{{ post.author.username }}</span>
-            </div>
-            <p class="subheading">{{ post.body }}</p>
-          </div>
+        <v-card-title primary-title class="pb-0">
+          <v-flex xs12 class="ma-0 pa-0">
+            <p class="subheading mb-2">
+              {{ post.author.first_name }} {{ post.author.last_name }}
+              <span
+                class="grey--text"
+              >@{{ post.author.username }}</span>
+            </p>
+          </v-flex>
+          <p class="display-1">{{ post.title }}</p>
         </v-card-title>
+        <v-card-text>
+          <p class="subheading">{{ post.body }}</p>
+        </v-card-text>
       </v-card>
     </v-flex>
 
@@ -86,7 +91,6 @@ export default {
   },
 
   methods: {
-
     submit() {
       if (!this.validateForm()) return;
 

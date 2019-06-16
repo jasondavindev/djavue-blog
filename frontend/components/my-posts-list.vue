@@ -1,12 +1,12 @@
 <template>
   <v-container fluid grid-list-lg>
-    <center-progress :condition="!posts" size="100"></center-progress>
+    <center-progress :condition="!posts" size="60"></center-progress>
 
     <v-layout row wrap justify-center v-if="posts && !posts.length">
       <v-flex xs12 md8 lg6>
         <v-card>
           <v-card-text>
-            <p class="text-xs-center grey--text subheading">Ops! Você não possúi posts :-(</p>
+            <p class="text-xs-center grey--text subheading mb-0">Ops! Você não possúi posts :-(</p>
           </v-card-text>
         </v-card>
       </v-flex>

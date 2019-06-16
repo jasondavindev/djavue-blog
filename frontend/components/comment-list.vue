@@ -1,5 +1,5 @@
 <template>
-  <v-list two-line subheader>
+  <v-list two-line subheader class="pb-0">
     <v-subheader>Comentários</v-subheader>
     <template v-for="(comment, index) in comments">
       <comment-component :comment="comment" :key="index"></comment-component>

@@ -66,20 +66,24 @@ export default {
     openLoginDialog() {
       this.$refs.login_dialog.open();
     },
+
     goToSignUp() {
       this.$router.push({ name: "signup" });
     },
+
     logout() {
       AppApi.logout().then(() => {
         this.$store.commit("SET_LOGGED_USER", null);
-        // Snacks.show(this.$store, { text: "Até logo!" });
+        this.toIndex();
       });
     },
+
     toIndex() {
       this.$router.push({ name: "index" });
     },
+
     viewMyPosts() {
-      this.$router.push({ name: 'my-posts' });
+      this.$router.push({ name: "my-posts" });
     }
   }
 };
