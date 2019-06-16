@@ -40,7 +40,7 @@
       </v-card>
     </v-flex>
 
-    <center-progress :condition="comments" size="50"></center-progress>
+    <center-progress :condition="!comments" size="50"></center-progress>
 
     <v-flex xs12 v-if="comments && comments.length">
       <v-card color="white">

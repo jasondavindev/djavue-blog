@@ -34,14 +34,14 @@
         </v-list>
         <v-divider></v-divider>
         <v-list>
-          <v-list-tile @click="switchMode()">
+          <v-list-tile @click="viewMyPosts">
             <v-list-tile-content>
-              <v-list-tile-title>Staff mode</v-list-tile-title>
+              <v-list-tile-title>Meus posts</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
-          <v-list-tile @click="logout()">
+          <v-list-tile @click="logout">
             <v-list-tile-content>
-              <v-list-tile-title>Log out</v-list-tile-title>
+              <v-list-tile-title>Sair</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
         </v-list>
@@ -77,6 +77,9 @@ export default {
     },
     toIndex() {
       this.$router.push({ name: "index" });
+    },
+    viewMyPosts() {
+      this.$router.push({ name: 'my-posts' });
     }
   }
 };

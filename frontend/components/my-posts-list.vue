@@ -1,41 +1,52 @@
 <template>
   <v-container fluid grid-list-lg>
+    <center-progress :condition="!posts" size="100"></center-progress>
+
+    <v-layout row wrap justify-center v-if="posts && !posts.length">
+      <v-flex xs12 md8 lg6>
+        <v-card>
+          <v-card-text>
+            <p class="text-xs-center grey--text subheading">Ops! Você não possúi posts :-(</p>
+          </v-card-text>
+        </v-card>
+      </v-flex>
+    </v-layout>
+
     <v-layout row wrap>
-      <center-progress :condition="!posts" size="100"></center-progress>
       <template v-for="post in posts">
         <v-flex xs12>
           <v-card color="white">
             <v-card-title primary-title>
-              <div class="post-content">
-                <div class="post-description">
-                  <span class="post-title">{{ post.title }}</span>
-                  <span class="post-author grey--text lighten-2">@{{ post.author.username }}</span>
-                </div>
-                <p class="subheading">{{ post.body | partBody }}</p>
-              </div>
+              <p class="display-1">{{ post.title }}</p>
+              <p class="subheading">{{ post.body | partBody }}</p>
             </v-card-title>
             <v-divider light></v-divider>
             <v-card-actions>
               <v-btn
                 flat
                 color="primary"
-                :to="{ name: 'posts-id', params: {id: post.id }}"
+                :to="{ name: 'posts-id', params: { id: post.id }}"
               >Continuar lendo</v-btn>
+              <v-spacer></v-spacer>
+              <v-icon class="mr-3" color="primary" @click="openDeleteDialog(post.id)">delete</v-icon>
             </v-card-actions>
           </v-card>
         </v-flex>
       </template>
     </v-layout>
+    <delete-post ref="delete_post_dialog" @deleted-post="deletedPost"></delete-post>
   </v-container>
 </template>
 
 <script>
 import AppApi from "~apijs";
 import centerProgress from "~/components/center-progress-circular";
+import deletePost from "~/components/delete-post";
 
 export default {
   components: {
-    centerProgress
+    centerProgress,
+    deletePost
   },
 
   data() {
@@ -60,6 +71,15 @@ export default {
       } finally {
         this.loading = false;
       }
+    },
+
+    openDeleteDialog(post) {
+      this.$refs.delete_post_dialog.setPost(post);
+      this.$refs.delete_post_dialog.open();
+    },
+
+    deletedPost(postId) {
+      this.posts = this.posts.filter(post => post.id !== postId);
     }
   },
 
@@ -74,19 +94,3 @@ export default {
   }
 };
 </script>
-
-<style>
-.post-description {
-  margin-bottom: 10px;
-  line-height: 32px;
-  display: inline-flex;
-}
-.post-description .post-title {
-  font-size: 32px;
-  font-weight: bold;
-}
-.post-description .post-author {
-  font-size: 24px;
-  margin-left: 5px;
-}
-</style>

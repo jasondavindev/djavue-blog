@@ -1,5 +1,5 @@
 <template>
-  <v-container v-if="!condition">
+  <v-container v-if="condition">
     <v-layout justify-center>
       <v-progress-circular
         :size="size"

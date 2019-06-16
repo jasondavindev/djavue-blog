@@ -142,6 +142,12 @@ const api = {
 			email: user.email,
 		});
 	},
+	delete_post(post) {
+		return mockasync({
+			deleted: true,
+			post
+		})
+	}
 };
 
 export default api;
