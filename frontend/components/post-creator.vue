@@ -6,7 +6,13 @@
       </v-card-title>
       <v-card-text>
         <v-flex xs12 clas="pa-0">
-          <v-text-field v-model="title" ref="title" label="Título" :rules="[fieldRequired]" maxlength="60"></v-text-field>
+          <v-text-field
+            v-model="title"
+            ref="title"
+            label="Título"
+            :rules="[fieldRequired]"
+            maxlength="60"
+          ></v-text-field>
           <v-text-field v-model="body" ref="body" label="Texto" :rules="[fieldRequired]" textarea></v-text-field>
         </v-flex>
       </v-card-text>
@@ -48,7 +54,6 @@ export default {
   methods: {
     submit() {
       if (!this.validateForm()) return;
-
       this.submitPost();
     },
 
@@ -57,11 +62,15 @@ export default {
 
       try {
         const { data } = await AppApi.create_post(this.form);
-        this.$router.push({ name: "posts-id", params: { id: data.id } });
+        this.redirectToPost(data.id);
       } catch (error) {
       } finally {
         this.creating = false;
       }
+    },
+
+    redirectToPost(id) {
+      this.$router.push({ name: "posts-id", params: { id } });
     }
   }
 };

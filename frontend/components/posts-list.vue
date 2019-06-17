@@ -1,57 +1,40 @@
 <template>
-  <v-layout row wrap> <!--  justify-center -->
-    <v-flex xs12 md8 lg6 offset-md2 offset-lg3 v-if="posts && !posts.length">
-      <v-card>
-        <v-card-text>
-          <p class="text-xs-center grey--text subheading mb-0">Ops! Não encontramos nenhum post :-(</p>
-        </v-card-text>
-      </v-card>
-    </v-flex>
+  <v-layout row wrap>
+    <ops-card message="Ops! Não encontramos nenhum post :-(" :condition="posts && !posts.length"></ops-card>
     
     <center-progress :condition="!posts" size="60"></center-progress>
-    <template v-for="post in posts">
-      <v-flex xs12>
-        <v-card color="white">
-          <v-card-title primary-title class="pb-0">
-            <v-flex xs12 class="ma-0 pa-0">
-              <p class="subheading mb-2">
-                {{ post.author.first_name }} {{ post.author.last_name }}
-                <span
-                  class="grey--text"
-                >@{{ post.author.username }}</span>
-              </p>
-            </v-flex>
-            <p class="display-1">{{ post.title }}</p>
-          </v-card-title>
-          <v-card-text>
-            <p class="subheading">{{ post.body | partBody }}</p>
-          </v-card-text>
-          <v-divider light></v-divider>
-          <v-card-actions>
-            <v-btn
-              flat
-              color="primary"
-              :to="{ name: 'posts-id', params: {id: post.id }}"
-            >Continuar lendo</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-flex>
-    </template>
+    
+    <v-flex xs12 md4 lg3 order-md2 v-if="posts">
+      <most-popular :posts="populars"></most-popular>
+    </v-flex>
+
+    <v-flex xs12 md8 lg9 order-md1 class="pa-0">
+      <template v-for="post in posts">
+        <my-post-card :post="post" :key="post.id"></my-post-card>
+      </template>
+    </v-flex>
   </v-layout>
 </template>
 
 <script>
 import AppApi from "~apijs";
 import centerProgress from "~/components/center-progress-circular";
+import opsCard from "~/components/ops-card";
+import mostPopular from "~/components/most-popular";
+import myPostCard from "~/components/my-post-card";
 
 export default {
   components: {
-    centerProgress
+    centerProgress,
+    opsCard,
+    mostPopular,
+    myPostCard
   },
 
   data() {
     return {
       posts: null,
+      populars: null,
       loading: false
     };
   },
@@ -67,21 +50,19 @@ export default {
       try {
         const { data } = await AppApi.list_posts();
         this.posts = data.posts.sort((a, b) => b.created - a.created);
+        this.setPopulars();
       } catch (error) {
       } finally {
         this.loading = false;
       }
+    },
+
+    setPopulars() {
+      this.populars = this.posts
+          .filter(post => post.likes > 0)
+          .sort((a, b) => b.likes - a.likes)
+          .slice(0, 5);
     }
   },
-
-  filters: {
-    partBody(value) {
-      if (value.length > 300) {
-        return `${value.substr(0, 300)}...`;
-      }
-
-      return value;
-    }
-  }
 };
 </script>

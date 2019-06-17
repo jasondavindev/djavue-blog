@@ -1,14 +1,7 @@
 <template>
   <v-layout row wrap>
+    <ops-card message="Ops! Você não possui posts :-(" :condition="posts && !posts.length"></ops-card>
     <center-progress :condition="!posts" size="60"></center-progress>
-
-    <v-flex xs12 md8 lg6 offset-md2 offset-lg3 v-if="posts && !posts.length">
-      <v-card>
-        <v-card-text>
-          <p class="text-xs-center grey--text subheading mb-0">Ops! Você não possui posts :-(</p>
-        </v-card-text>
-      </v-card>
-    </v-flex>
 
     <template v-for="post in posts">
       <v-flex xs12>
@@ -40,11 +33,13 @@
 import AppApi from "~apijs";
 import centerProgress from "~/components/center-progress-circular";
 import deletePost from "~/components/delete-post";
+import opsCard from "~/components/ops-card";
 
 export default {
   components: {
     centerProgress,
-    deletePost
+    deletePost,
+    opsCard
   },
 
   data() {
