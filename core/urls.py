@@ -13,6 +13,7 @@ urlpatterns = [
     # post
     url(r'api/posts$', views.posts),
     url(r'api/posts/(?P<id>\d+)$', views.posts),
+    url(r'api/posts/(?P<id>\d+)/like$', views.like_post),
     url(r'api/my-posts$', views.my_posts),
 
     # comment

@@ -13,7 +13,7 @@
     <v-btn v-if="!logged_user" flat dark ripple @click.stop="goToSignUp()">Cadastrar</v-btn>
     <v-btn v-if="!logged_user" flat dark ripple @click.stop="openLoginDialog()">Entrar</v-btn>
     <v-menu v-if="logged_user" offset-y>
-      <v-btn icon slot="activator" class="ma-0 ml-5">
+      <v-btn icon slot="activator" class="ma-0 ml-3">
         <v-avatar size="36px">
           <img src="https://graph.facebook.com/4/picture?width=300&height=300">
         </v-avatar>

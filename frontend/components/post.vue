@@ -16,6 +16,14 @@
         <v-card-text>
           <p class="subheading">{{ post.body }}</p>
         </v-card-text>
+        <v-card-actions>
+          <div class="like-button ma-0">
+            <v-btn flat fab color="pink darken-2" @click="like">
+              <v-icon>favorite</v-icon>
+            </v-btn>
+            <span class="body-2 pink--text darken-2">{{ post.likes }}</span>
+          </div>
+        </v-card-actions>
       </v-card>
     </v-flex>
 
@@ -49,6 +57,9 @@
 
     <v-flex xs12 v-if="comments && comments.length">
       <v-card color="white">
+        <v-card-title class="pb-1">
+          <p class="title ma-0">Comentários</p>
+        </v-card-title>
         <v-card-text>
           <comment-list :comments="comments"></comment-list>
         </v-card-text>
@@ -74,7 +85,8 @@ export default {
     return {
       comment: "",
       comments: null,
-      commenting: false
+      commenting: false,
+      liked: false
     };
   },
 
@@ -101,7 +113,10 @@ export default {
       this.commenting = true;
 
       try {
-        const { data } = await AppApi.save_comment({ comment: this.comment, post: this.post.id });
+        const { data } = await AppApi.save_comment({
+          comment: this.comment,
+          post: this.post.id
+        });
         this.comments.unshift(data);
       } catch (error) {
       } finally {
@@ -114,23 +129,18 @@ export default {
         const { data } = await AppApi.list_comments(this.post.id);
         this.comments = data.comments.sort((a, b) => b.created - a.created);
       } catch (error) {}
+    },
+
+    async like() {
+      if (this.liked) return;
+
+      try {
+        const { data } = await AppApi.send_like(this.post.id);
+
+        if (data.liked) this.post.likes++;
+        this.liked = true;
+      } catch (error) {}
     }
   }
 };
 </script>
-
-<style>
-.post-description {
-  margin-bottom: 10px;
-  line-height: 32px;
-  display: inline-flex;
-}
-.post-description .post-title {
-  font-size: 32px;
-  font-weight: bold;
-}
-.post-description .post-author {
-  font-size: 24px;
-  margin-left: 5px;
-}
-</style>

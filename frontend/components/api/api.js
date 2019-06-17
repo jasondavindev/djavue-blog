@@ -25,8 +25,9 @@ export default {
 	create_post: _post => post('/api/posts', _post),
 	list_post: post => get(`/api/posts/${post}`),
 	list_posts: () => get('/api/posts'),
-    delete_post: post => axios_delete(`/api/posts/${post}`),
-    get_my_posts: () => get('/api/my-posts'),
+	delete_post: post => axios_delete(`/api/posts/${post}`),
+	get_my_posts: () => get('/api/my-posts'),
+	send_like: (post) => get(`/api/posts/${post}/like`),
 
 	/** comment */
 	save_comment: comment => post('/api/comments', comment),

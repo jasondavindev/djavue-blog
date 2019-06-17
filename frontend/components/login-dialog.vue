@@ -1,9 +1,11 @@
 <template>
   <v-dialog v-model="visible" max-width="500px">
     <v-card>
-      <v-card-title>Iniciar sessão</v-card-title>
-      <v-card-text>
-        <v-container fluid>
+      <v-container fluid>
+        <v-card-title>
+          <p class="title">Iniciar sessão</p>
+        </v-card-title>
+        <v-card-text>
           <v-text-field label="Nome de usuário" required v-model="username"/>
           <v-text-field
             label="Senha"
@@ -13,16 +15,19 @@
             @keyup.enter="login()"
           />
           <small style="color: red;" v-if="error">Usuário ou senha incorretos!</small>
-        </v-container>
-      </v-card-text>
-      <v-btn class="blue--text darken-1" flat @click="close()">Cancelar</v-btn>
-      <v-btn
-        class="blue--text darken-1"
-        flat
-        @click="login()"
-        :loading="loading"
-        :disabled="loading"
-      >Entrar</v-btn>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn class="blue--text darken-1" flat @click="close()">Cancelar</v-btn>
+          <v-spacer></v-spacer>
+          <v-btn
+            class="blue--text darken-1"
+            flat
+            @click="login()"
+            :loading="loading"
+            :disabled="loading"
+          >Entrar</v-btn>
+        </v-card-actions>
+      </v-container>
     </v-card>
   </v-dialog>
 </template>
@@ -62,7 +67,7 @@ export default {
           this.$store.commit("SET_LOGGED_USER", data);
           this.visible = false;
           console.log("logged");
-          this.$router.push({ name: 'index' });
+          this.$router.push({ name: "index" });
         } else {
           this.error = true;
         }

@@ -27,3 +27,13 @@ def delete_post(id):
 def get_my_posts(author):
   posts = Post.objects.filter(author=author)
   return [post.toJSON() for post in posts]
+
+def like_post(id):
+  try:
+    post = Post.objects.get(pk=id)
+    post.likes += 1
+    post.save()
+
+    return { 'liked': True }
+  except:
+    return { 'liked': False }

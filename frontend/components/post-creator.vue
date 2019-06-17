@@ -1,14 +1,14 @@
 <template>
   <v-flex xs12>
-    <v-card color="white">
+    <v-card color="white pa-3">
       <v-card-title primary-title>
-        <h2>Criar Post</h2>
+        <p class="title">Criar post</p>
       </v-card-title>
       <v-card-text>
-        <v-container fluid>
-          <v-text-field v-model="title" ref="title" label="Título" :rules="[fieldRequired]"></v-text-field>
+        <v-flex xs12 clas="pa-0">
+          <v-text-field v-model="title" ref="title" label="Título" :rules="[fieldRequired]" maxlength="60"></v-text-field>
           <v-text-field v-model="body" ref="body" label="Texto" :rules="[fieldRequired]" textarea></v-text-field>
-        </v-container>
+        </v-flex>
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
@@ -46,7 +46,6 @@ export default {
   },
 
   methods: {
-
     submit() {
       if (!this.validateForm()) return;
 

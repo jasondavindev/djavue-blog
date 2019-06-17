@@ -25,6 +25,7 @@ class Post(models.Model):
     body = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='post_from_user')
+    likes = models.IntegerField(default=0)
 
     def toJSON(self):
         return {
@@ -32,6 +33,7 @@ class Post(models.Model):
             'title': self.title,
             'body': self.body,
             'created': int(self.created.timestamp() * 1000),
+            'likes': self.likes,
             'author': {
                 'username': self.author.username,
                 'first_name': self.author.first_name,

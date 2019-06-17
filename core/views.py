@@ -34,7 +34,7 @@ def logout(request):
     auth.logout(request)
     return HttpResponse('{}', content_type='application/json')
 
-
+@csrf_exempt
 def create_account(request):
     username = request.POST['username']
     email = request.POST['email']
@@ -67,6 +67,8 @@ def posts(request, id=None):
         return JsonResponse(post_svc.delete_post(id), safe=False)
     return JsonResponse({'posts': post_svc.get_all_posts()}, safe=False)
 
+def like_post(request, id):
+    return JsonResponse(post_svc.like_post(id), safe=False)
 
 def comments(request, id=None):
     if request.method.lower() == 'post':
