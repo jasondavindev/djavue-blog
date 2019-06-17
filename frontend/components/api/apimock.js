@@ -84,7 +84,22 @@ const api = {
 		});
 	},
 	get_my_posts() {
-		return list_posts();
+		return mockasync({
+			posts: [
+				{
+					id: 1,
+					title: 'My first post',
+					body:
+						'Travelling alteration impression six all uncommonly. Chamber hearing inhabit joy highest private ask him our believe. Up nature valley do warmly. Entered of cordial do on no hearted. Yet agreed whence and unable limits. Use off him gay abilities concluded immediate allowance.',
+					author: {
+						username: 'bot',
+						first_name: 'Django',
+						last_name: 'Bot',
+					},
+					created: Date.now(),
+				},
+			],
+		});
 	},
 	create_post(post) {
 		return mockasync(
@@ -149,9 +164,9 @@ const api = {
 	delete_post(post) {
 		return mockasync({
 			deleted: true,
-			post
-		})
-	}
+			post,
+		});
+	},
 };
 
 export default api;
