@@ -1,41 +1,39 @@
 <template>
-  <v-container fluid grid-list-lg>
+  <v-layout row wrap>
     <center-progress :condition="!posts" size="60"></center-progress>
 
-    <v-layout row wrap justify-center v-if="posts && !posts.length">
-      <v-flex xs12 md8 lg6>
-        <v-card>
-          <v-card-text>
-            <p class="text-xs-center grey--text subheading mb-0">Ops! Você não possúi posts :-(</p>
-          </v-card-text>
+    <v-flex xs12 md8 lg6 offset-md2 offset-lg3 v-if="posts && !posts.length">
+      <v-card>
+        <v-card-text>
+          <p class="text-xs-center grey--text subheading mb-0">Ops! Você não possui posts :-(</p>
+        </v-card-text>
+      </v-card>
+    </v-flex>
+
+    <template v-for="post in posts">
+      <v-flex xs12>
+        <v-card color="white">
+          <v-card-title primary-title>
+            <v-flex xs12 class="ma-0 pa-0">
+              <p class="display-1">{{ post.title }}</p>
+            </v-flex>
+            <p class="subheading">{{ post.body | partBody }}</p>
+          </v-card-title>
+          <v-divider light></v-divider>
+          <v-card-actions>
+            <v-btn
+              flat
+              color="primary"
+              :to="{ name: 'posts-id', params: { id: post.id }}"
+            >Continuar lendo</v-btn>
+            <v-spacer></v-spacer>
+            <v-icon class="mr-3" color="primary" @click="openDeleteDialog(post.id)">delete</v-icon>
+          </v-card-actions>
         </v-card>
       </v-flex>
-    </v-layout>
-
-    <v-layout row wrap>
-      <template v-for="post in posts">
-        <v-flex xs12>
-          <v-card color="white">
-            <v-card-title primary-title>
-              <p class="display-1">{{ post.title }}</p>
-              <p class="subheading">{{ post.body | partBody }}</p>
-            </v-card-title>
-            <v-divider light></v-divider>
-            <v-card-actions>
-              <v-btn
-                flat
-                color="primary"
-                :to="{ name: 'posts-id', params: { id: post.id }}"
-              >Continuar lendo</v-btn>
-              <v-spacer></v-spacer>
-              <v-icon class="mr-3" color="primary" @click="openDeleteDialog(post.id)">delete</v-icon>
-            </v-card-actions>
-          </v-card>
-        </v-flex>
-      </template>
-    </v-layout>
+    </template>
     <delete-post ref="delete_post_dialog" @deleted-post="deletedPost"></delete-post>
-  </v-container>
+  </v-layout>
 </template>
 
 <script>
@@ -65,7 +63,7 @@ export default {
       this.loading = true;
 
       try {
-        const { data } = await AppApi.list_posts();
+        const { data } = await AppApi.get_my_posts();
         this.posts = data.posts.sort((a, b) => b.created - a.created);
       } catch (error) {
       } finally {

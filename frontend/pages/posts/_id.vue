@@ -1,11 +1,5 @@
 <template>
-  <v-layout>
-    <v-container fluid grid-list-lg>
-      <v-layout row wrap>
-        <post-component v-if="post" :post="post"></post-component>
-      </v-layout>
-    </v-container>
-  </v-layout>
+  <post-component v-if="post" :post="post"></post-component>
 </template>
 
 <script>

@@ -83,6 +83,9 @@ const api = {
 			},
 		});
 	},
+	get_my_posts() {
+		return list_posts();
+	},
 	create_post(post) {
 		return mockasync(
 			Object.assign(post, {

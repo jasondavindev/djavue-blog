@@ -2,7 +2,7 @@
   <v-app id="inspire">
     <toolbar :state="layout"/>
     <v-content class="grey lighten-3">
-      <v-container fluid>
+      <v-container fluid grid-list-lg>
         <nuxt></nuxt>
       </v-container>
     </v-content>

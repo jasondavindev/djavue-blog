@@ -61,7 +61,7 @@ export default {
     },
 
     emitDeletedPost(post) {
-      this.$emit("deleted-post", post);
+      this.$emit("deleted-post", parseInt(post));
       this.close();
     }
   }

@@ -1,7 +1,7 @@
 <template>
-  <div class="post">
+  <v-layout row wrap>
     <v-flex xs12>
-      <v-card color="white">
+      <v-card color="white" width="100%">
         <v-card-title primary-title class="pb-0">
           <v-flex xs12 class="ma-0 pa-0">
             <p class="subheading mb-2">
@@ -54,7 +54,7 @@
         </v-card-text>
       </v-card>
     </v-flex>
-  </div>
+  </v-layout>
 </template>
 
 <script>
@@ -101,7 +101,7 @@ export default {
       this.commenting = true;
 
       try {
-        const { data } = await AppApi.save_comment({ comment: this.comment });
+        const { data } = await AppApi.save_comment({ comment: this.comment, post: this.post.id });
         this.comments.unshift(data);
       } catch (error) {
       } finally {

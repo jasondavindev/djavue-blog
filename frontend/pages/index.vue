@@ -1,11 +1,9 @@
 <template>
-  <v-layout>
-    <posts-list></posts-list>
-  </v-layout>
+  <posts-list></posts-list>
 </template>
 
 <script>
-import postsList from '~/components/posts-list'
+import postsList from "~/components/posts-list";
 
 export default {
   components: {

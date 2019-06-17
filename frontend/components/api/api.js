@@ -22,10 +22,11 @@ export default {
 	create_account: user => post('/api/signup', user),
 
 	/** post */
-	create_post: post => post('/api/posts', post),
+	create_post: _post => post('/api/posts', _post),
 	list_post: post => get(`/api/posts/${post}`),
 	list_posts: () => get('/api/posts'),
-	delete_post: post => axios_delete(`/api/posts/${post}`),
+    delete_post: post => axios_delete(`/api/posts/${post}`),
+    get_my_posts: () => get('/api/my-posts'),
 
 	/** comment */
 	save_comment: comment => post('/api/comments', comment),
