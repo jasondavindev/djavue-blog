@@ -16,11 +16,14 @@ class TestAuthApi(TestCase):
         client.force_login(User.objects.get(username='test'))
 
         r1 = client.post('/api/posts', fixtures.get_post())
-        # r1 = client.post('/api/add_todo', {'new_task': 'walk the dog'})
-        # r2 = client.post('/api/add_todo', {'new_task': 'do the laundry'})
-        # r3 = client.get('/api/list_todos')
-        # self.assertEqual({200}, {r.status_code for r in [r1, r2, r3]})
-        # todos = json.loads(r3.content.decode('utf-8'))
-        # self.assertEqual(2, len(todos['todos']))
-        # self.assertEqual(True, r1.json().has_key('posts'))
-
+        r2 = client.get('/api/posts')
+        posts = r2.json()['posts']
+        r3 = client.get('/api/posts/%d' % posts[0]['id'])
+        r4 = client.get('/api/posts/%d/like' % posts[0]['id'])
+        r5 = client.delete('/api/posts/%d' % posts[0]['id'])
+        
+        self.assertEqual(True, 'created' in r1.json().keys())
+        self.assertEqual(1, len(posts))
+        self.assertEqual(True, 'post' in r3.json())
+        self.assertEqual(True, r4.json()['liked'])
+        self.assertEquals(True, r5.json()['deleted'])

@@ -15,3 +15,9 @@ def get_post():
         'title': 'my post',
         'body': 'my body'
     }
+
+def get_comment():
+    return {
+        'comment': 'hello world!',
+        'post': 1,
+    }
