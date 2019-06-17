@@ -4,7 +4,7 @@
     
     <center-progress :condition="!posts" size="60"></center-progress>
     
-    <v-flex xs12 md4 lg3 order-md2 v-if="posts">
+    <v-flex xs12 md4 lg3 order-md2 v-if="populars && populars.length">
       <most-popular :posts="populars"></most-popular>
     </v-flex>
 
