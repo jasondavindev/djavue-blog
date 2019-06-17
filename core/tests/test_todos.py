@@ -8,11 +8,11 @@ import json
 class TestAuthApi(TestCase):
     @classmethod
     def setUpTestData(cls):
-        fixtures.user_jon()
+        fixtures.create_user()
 
     def test_auth_api(self):
         client = Client()
-        client.force_login(User.objects.get(username='jon'))
+        client.force_login(User.objects.get(username='test'))
         # r1 = client.post('/api/add_todo', {'new_task': 'walk the dog'})
         # r2 = client.post('/api/add_todo', {'new_task': 'do the laundry'})
         # r3 = client.get('/api/list_todos')

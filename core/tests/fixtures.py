@@ -1,12 +1,11 @@
 from core.models import User
 
 
-def user_jon():
-    ze = User.objects.create_user(
-        username='jon',
-        first_name='Jon',
-        last_name='Snow',
-        email='jon@example.com',
-        password='snow',
+def create_user():
+    return User.objects.create_user(
+        username='test',
+        password='test',
+        email='test@mail.com',
+        first_name='test',
+        last_name='bot',
     )
-    return ze
