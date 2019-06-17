@@ -9,3 +9,9 @@ def create_user():
         first_name='test',
         last_name='bot',
     )
+
+def get_post():
+    return {
+        'title': 'my post',
+        'body': 'my body'
+    }
