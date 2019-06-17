@@ -111,7 +111,7 @@ export default {
 
     async getComments() {
       try {
-        const { data } = await AppApi.list_comments();
+        const { data } = await AppApi.list_comments(this.post.id);
         this.comments = data.comments.sort((a, b) => b.created - a.created);
       } catch (error) {}
     }
