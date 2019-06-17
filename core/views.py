@@ -4,7 +4,7 @@ from django.http.response import HttpResponse, JsonResponse
 from django.contrib import auth
 from commons.django_model_utils import get_or_none
 from commons.django_views_utils import ajax_login_required
-from core.service import log_svc, todo_svc, post_svc, comment_svc
+from core.service import log_svc, post_svc, comment_svc, user_svc
 from django.views.decorators.csrf import csrf_exempt
 
 
@@ -14,45 +14,20 @@ def dapau(request):
 
 @csrf_exempt
 def login(request):
-    username = request.POST['username']
-    password = request.POST['password']
-    user = auth.authenticate(username=username, password=password)
-    user_dict = None
-    if user is not None:
-        if user.is_active:
-            auth.login(request, user)
-            log_svc.log_login(request.user)
-            user_dict = _user2dict(user)
-    return JsonResponse(user_dict, safe=False)
+    return JsonResponse(user_svc.login(request, request.POST['username'], request.POST['password']), safe=False)
 
 
 def logout(request):
-    if request.method.lower() != 'post':
-        raise Exception('Logout only via post')
-    if request.user.is_authenticated():
-        log_svc.log_logout(request.user)
-    auth.logout(request)
-    return HttpResponse('{}', content_type='application/json')
+    return JsonResponse(user_svc.logout(request), safe=False)
+
 
 @csrf_exempt
 def create_account(request):
-    username = request.POST['username']
-    email = request.POST['email']
-    password = request.POST['password']
-    first_name = request.POST['firstname']
-    last_name = request.POST['lastname']
-    result = auth.models.User.objects.create_user(
-        username, email=email, password=password, first_name=first_name, last_name=last_name)
-
-    return JsonResponse(_user2dict(result), safe=False)
+    return JsonResponse(user_svc.create_account(request), safe=False)
 
 
 def whoami(request):
-    i_am = {
-        'user': _user2dict(request.user),
-        'authenticated': True,
-    } if request.user.is_authenticated() else {'authenticated': False}
-    return JsonResponse(i_am)
+    return JsonResponse(user_svc.whoami(request.user))
 
 
 def posts(request, id=None):
@@ -65,46 +40,24 @@ def posts(request, id=None):
 
     elif request.method.lower() == 'delete' and id:
         return JsonResponse(post_svc.delete_post(id), safe=False)
+
+
     return JsonResponse({'posts': post_svc.get_all_posts()}, safe=False)
+
 
 def like_post(request, id):
     return JsonResponse(post_svc.like_post(id), safe=False)
 
+
 def comments(request, id=None):
     if request.method.lower() == 'post':
-        comment = request.POST['comment']
-        post_id = request.POST['post']
-        return JsonResponse(comment_svc.create_comment(comment, request.user, post_id), safe=False)
-    elif id != None:
+        return JsonResponse(comment_svc.create_comment(request.POST['comment'], request.user, request.POST['post']), safe=False)
+
+    elif id:
         return JsonResponse({'comments': comment_svc.get_comments(id)}, safe=False)
+        
     return JsonResponse({})
+
 
 def my_posts(request):
     return JsonResponse({ 'posts': post_svc.get_my_posts(request.user) }, safe=False)
-
-@ajax_login_required
-def add_todo(request):
-    todo = todo_svc.add_todo(request.POST['new_task'])
-    return JsonResponse(todo)
-
-
-@ajax_login_required
-def list_todos(request):
-    todos = todo_svc.list_todos()
-    return JsonResponse({'todos': todos})
-
-
-def _user2dict(user):
-    d = {
-        'id': user.id,
-        'name': user.get_full_name(),
-        'username': user.username,
-        'first_name': user.first_name,
-        'last_name': user.last_name,
-        'email': user.email,
-        'permissions': {
-            'ADMIN': user.is_superuser,
-            'STAFF': user.is_staff,
-        }
-    }
-    return d

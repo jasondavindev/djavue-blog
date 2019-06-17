@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime
 
+
 class ActivityLog(models.Model):
     type = models.CharField(max_length=64)
     logged_user = models.ForeignKey(User, null=True, blank=True)
@@ -58,15 +59,4 @@ class Comment(models.Model):
                 'first_name': self.author.first_name,
                 'last_name': self.author.last_name,
             }
-        }
-
-class Todo(models.Model):
-    description = models.CharField(max_length=512)
-    done = models.BooleanField(default=False)
-
-    def to_dict_json(self):
-        return {
-            'id': self.id,
-            'description': self.description,
-            'done': self.done,
         }

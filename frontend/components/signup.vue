@@ -37,6 +37,7 @@
             type="password"
             :rules="[fieldRequired, strongPassword]"
           ></v-text-field>
+          <span v-if="error" class="red--text">Não foi possível criar sua conta</span>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -64,7 +65,8 @@ export default {
       lastname: null,
       email: null,
       password: null,
-      registering: false
+      registering: false,
+      error: false,
     };
   },
 
@@ -98,11 +100,23 @@ export default {
 
       try {
         const { data } = await AppApi.create_account(user);
-        this.$router.push({ name: "index" });
+        this.validAccount(data);
       } catch (error) {
       } finally {
         this.registering = false;
       }
+    },
+
+    validAccount(data) {
+      if (data.created) {
+        this.redirectToIndex();
+      } else {
+        this.error = true;
+      }
+    },
+
+    redirectToIndex() {
+      this.$router.push({ name: "index" });
     }
   }
 };
