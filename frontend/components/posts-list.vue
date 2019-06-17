@@ -58,10 +58,12 @@ export default {
     },
 
     setPopulars() {
-      this.populars = this.posts
+      const populars = this.posts
           .filter(post => post.likes > 0)
           .sort((a, b) => b.likes - a.likes)
           .slice(0, 5);
+
+      this.populars = populars.length > 0 ? populars : this.posts;
     }
   },
 };
