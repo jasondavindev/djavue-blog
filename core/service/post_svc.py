@@ -1,9 +1,23 @@
 from core.models import Post
 from django.contrib.auth.models import User
+from commons.django_model_utils import get_or_none
+
+def switch_post_action(request, id=None):
+  if request.method.lower() == 'post':
+    return create_post(request.POST['title'], request.POST['body'], request.user)
+
+  elif request.method.lower() == 'get' and id:
+    return get_post(id)
+
+  elif request.method.lower() == 'delete' and id:
+    return delete_post(id)
+
+  return { 'posts': get_all_posts() }
 
 def create_post(title, body, user):
   post = Post(title=title, body=body, author=user)
   post.save()
+
   return post.toJSON()
 
 def get_all_posts():
@@ -11,29 +25,33 @@ def get_all_posts():
   return [post.toJSON() for post in posts]
 
 def get_post(id):
-  try:
-    post = Post.objects.get(pk=id)
+  post = get_or_none(Post, pk=id)
+
+  if post:
     return { 'post': post.toJSON() }
-  except:
-    return {}
+
+  return {}
 
 def delete_post(id):
-  try:
-    Post.objects.get(pk=id).delete()
+  post = get_or_none(Post, pk=id)
+
+  if post:
+    post.delete()
     return { 'deleted': True, 'post': id }
-  except:
-    return { 'deleted': False }
+
+  return { 'deleted': False }
 
 def get_my_posts(author):
   posts = Post.objects.filter(author=author)
   return [post.toJSON() for post in posts]
 
 def like_post(id):
-  try:
-    post = Post.objects.get(pk=id)
+  post = get_or_none(Post, pk=id)
+
+  if post:
     post.likes += 1
     post.save()
-
     return { 'liked': True }
-  except:
-    return { 'liked': False }
+  
+  return { 'liked': False }
+  
