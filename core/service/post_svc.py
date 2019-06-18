@@ -3,20 +3,7 @@ from django.contrib.auth.models import User
 from commons.django_model_utils import get_or_none
 from commons.django_views_utils import ajax_login_required
 
-def switch_post_action(request, id=None):
-  if request.method.lower() == 'post':
-    return create_post(request, request.POST['title'], request.POST['body'], request.user)
-
-  elif request.method.lower() == 'get' and id:
-    return get_post(id)
-
-  elif request.method.lower() == 'delete' and id:
-    return delete_post(request, id)
-
-  return { 'posts': get_all_posts() }
-
-@ajax_login_required
-def create_post(request, title, body, user):
+def create_post(title, body, user):
   post = Post(title=title, body=body, author=user)
   post.save()
 
@@ -24,7 +11,8 @@ def create_post(request, title, body, user):
 
 def get_all_posts():
   posts = Post.objects.all()
-  return [post.toJSON() for post in posts]
+  dictPosts = [post.toJSON() for post in posts]
+  return { 'posts': dictPosts }
 
 def get_post(id):
   post = get_or_none(Post, pk=id)
@@ -34,8 +22,7 @@ def get_post(id):
 
   return {}
 
-@ajax_login_required
-def delete_post(request, id):
+def delete_post(id):
   post = get_or_none(Post, pk=id)
 
   if post:

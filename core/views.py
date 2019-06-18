@@ -3,8 +3,9 @@ import json
 from django.http.response import JsonResponse
 from django.contrib import auth
 from commons.django_views_utils import ajax_login_required
-from core.service import log_svc, post_svc, comment_svc, user_svc
+from core.service import log_svc, user_svc
 from django.views.decorators.csrf import csrf_exempt
+from core.controllers import post_ctrl, comment_ctrl
 
 
 def dapau(request):
@@ -30,16 +31,14 @@ def whoami(request):
 
 
 def posts(request, id=None):
-    return JsonResponse(post_svc.switch_post_action(request, id), safe=False)
+    return JsonResponse(post_ctrl.switch_post_action(request, id), safe=False)
 
-@ajax_login_required
 def like_post(request, id):
-    return JsonResponse(post_svc.like_post(id), safe=False)
+    return JsonResponse(post_ctrl.like_post(request, id), safe=False)
 
 
 def comments(request, id=None):
-    return JsonResponse(comment_svc.switch_comment_action(request, id), safe=False)
+    return JsonResponse(comment_ctrl.switch_comment_action(request, id), safe=False)
 
-@ajax_login_required
 def my_posts(request):
-    return JsonResponse(post_svc.get_my_posts(request.user), safe=False)
+    return JsonResponse(post_ctrl.get_my_posts(request.user), safe=False)
