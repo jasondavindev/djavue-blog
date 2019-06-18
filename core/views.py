@@ -1,6 +1,6 @@
 # coding: utf-8
 import json
-from django.http.response import HttpResponse, JsonResponse
+from django.http.response import JsonResponse
 from django.contrib import auth
 from commons.django_views_utils import ajax_login_required
 from core.service import log_svc, post_svc, comment_svc, user_svc
@@ -32,7 +32,7 @@ def whoami(request):
 def posts(request, id=None):
     return JsonResponse(post_svc.switch_post_action(request, id), safe=False)
 
-
+@ajax_login_required
 def like_post(request, id):
     return JsonResponse(post_svc.like_post(id), safe=False)
 
@@ -40,6 +40,6 @@ def like_post(request, id):
 def comments(request, id=None):
     return JsonResponse(comment_svc.switch_comment_action(request, id), safe=False)
 
-
+@ajax_login_required
 def my_posts(request):
-    return JsonResponse({ 'posts': post_svc.get_my_posts(request.user) }, safe=False)
+    return JsonResponse(post_svc.get_my_posts(request.user), safe=False)
