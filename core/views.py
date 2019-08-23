@@ -41,4 +41,4 @@ def comments(request, id=None):
     return JsonResponse(comment_ctrl.switch_comment_action(request, id), safe=False)
 
 def my_posts(request):
-    return JsonResponse(post_ctrl.get_my_posts(request.user), safe=False)
+    return JsonResponse(post_ctrl.get_my_posts(request), safe=False)

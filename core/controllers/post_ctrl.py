@@ -30,8 +30,8 @@ def delete_post(request, id):
   return post_svc.delete_post(id)
 
 @ajax_login_required
-def get_my_posts(author):
-  return post_svc.get_my_posts(author)
+def get_my_posts(request):
+  return post_svc.get_my_posts(request.user)
 
 @ajax_login_required
 def like_post(request, id):
