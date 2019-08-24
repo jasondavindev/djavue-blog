@@ -1,31 +1,15 @@
-import Vuex from 'vuex'
+import Vuex from 'vuex';
 
-const store = () => new Vuex.Store({
+import AuthModule from '~/store/modules/auth.module.js';
+import SnackModule from '~/store/modules/snack.module.js';
 
-  state: {
-    logged_user: undefined,
-    snack: {}
-  },
-  mutations: {
-    SET_LOGGED_USER(state, logged_user) {
-      console.log('set logged user: '+JSON.stringify(logged_user))
-      state.logged_user = logged_user
+export default () =>
+  new Vuex.Store({
+    modules: {
+      AuthModule,
+      SnackModule,
     },
-    SET_SNACK_STATE(state, newstate) {
-      state.snack = newstate
-    }
-  },
-  getters: {
-    logged_user(state) {
-      return state.logged_user
+    actions: {
+      nuxtServerInit({ commit }, { req }) {},
     },
-    snack (state) {
-      return state.snack
-    }
-  },
-  actions: {
-    nuxtServerInit({commit}, {req}) {}
-  }
-})
-
-export default store
+  });

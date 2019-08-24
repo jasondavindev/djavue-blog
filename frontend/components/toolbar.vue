@@ -8,14 +8,14 @@
       dark
       :ripple="false"
       :to="{ name: 'create-post' }"
-      v-if="logged_user"
+      v-if="currentUser"
     >Postar</v-btn>
-    <v-btn v-if="!logged_user" flat dark ripple @click.stop="goToSignUp()">Cadastrar</v-btn>
-    <v-btn v-if="!logged_user" flat dark ripple @click.stop="openLoginDialog()">Entrar</v-btn>
-    <v-menu v-if="logged_user" offset-y>
+    <v-btn v-if="!currentUser" flat dark ripple @click.stop="goToSignUp()">Cadastrar</v-btn>
+    <v-btn v-if="!currentUser" flat dark ripple @click.stop="openLoginDialog()">Entrar</v-btn>
+    <v-menu v-if="currentUser" offset-y>
       <v-btn icon slot="activator" class="ma-0 ml-3">
         <v-avatar size="36px">
-          <img src="https://graph.facebook.com/4/picture?width=300&height=300">
+          <img src="https://graph.facebook.com/4/picture?width=300&height=300" />
         </v-avatar>
       </v-btn>
       <v-card class="no-padding">
@@ -23,12 +23,12 @@
           <v-list-tile avatar>
             <v-list-tile-avatar>
               <v-avatar>
-                <img src="https://graph.facebook.com/4/picture?width=300&height=300">
+                <img src="https://graph.facebook.com/4/picture?width=300&height=300" />
               </v-avatar>
             </v-list-tile-avatar>
             <v-list-tile-content>
-              <v-list-tile-title>{{logged_user.first_name}} {{logged_user.last_name}}</v-list-tile-title>
-              <v-list-tile-sub-title>{{logged_user.email}}</v-list-tile-sub-title>
+              <v-list-tile-title>{{currentUser.first_name}} {{currentUser.last_name}}</v-list-tile-title>
+              <v-list-tile-sub-title>{{currentUser.email}}</v-list-tile-sub-title>
             </v-list-tile-content>
           </v-list-tile>
         </v-list>
@@ -47,24 +47,31 @@
         </v-list>
       </v-card>
     </v-menu>
-    <login-dialog ref="login_dialog"/>
+    <login-dialog ref="loginDialog" />
   </v-toolbar>
 </template>
 
 <script>
-import Vuex from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import loginDialog from "~/components/login-dialog.vue";
-import Snacks from "~/helpers/Snacks.js";
-import AppApi from "~apijs";
+import Snacks from "~/helpers/Snacks";
+import { AUTH_LOGOUT } from "~/store/actions.type";
+
 export default {
   components: {
     loginDialog
   },
-  computed: Object.assign({}, Vuex.mapGetters(["logged_user"])),
+  computed: {
+    ...mapGetters(["currentUser"])
+  },
+
   props: ["state"],
+
   methods: {
+    ...mapActions([AUTH_LOGOUT]),
+
     openLoginDialog() {
-      this.$refs.login_dialog.open();
+      this.$refs.loginDialog.open();
     },
 
     goToSignUp() {
@@ -72,10 +79,7 @@ export default {
     },
 
     logout() {
-      AppApi.logout().then(() => {
-        this.$store.commit("SET_LOGGED_USER", null);
-        this.toIndex();
-      });
+      this[AUTH_LOGOUT]().then(() => this.toIndex());
     },
 
     toIndex() {
