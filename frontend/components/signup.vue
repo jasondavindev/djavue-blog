@@ -44,7 +44,7 @@
           <v-btn
             color="primary"
             flat
-            @click="submit"
+            @click="createAccount"
             :loading="registering"
             :disabled="registering"
           >Cadastrar</v-btn>
@@ -55,6 +55,8 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+import { AUTH_REGISTER, AUTH_SET_ERROR } from "~/store/actions.type";
 import AppApi from "~apijs";
 
 export default {
@@ -66,7 +68,7 @@ export default {
       email: null,
       password: null,
       registering: false,
-      error: false,
+      error: false
     };
   },
 
@@ -83,40 +85,36 @@ export default {
   },
 
   methods: {
+    ...mapActions([AUTH_REGISTER, AUTH_SET_ERROR]),
+
+    createAccount() {
+      this.validAccount()
+        .then(this[AUTH_REGISTER])
+        .then(() => this.$router.push({ name: "index" }))
+        .catch(error => {
+          this[AUTH_SET_ERROR](error);
+          this.error = true;
+        })
+        .finally(() => (this.registering = false));
+    },
+
+    validAccount() {
+      return new Promise((resolve, reject) => {
+        if (!this.validateForm()) {
+          return reject("INVALID ACCOUNT DATA");
+        }
+
+        this.registering = true;
+        resolve(this.form);
+      });
+    },
+
     validUser(value) {
       if (value && /\W/g.test(value)) {
         return "Insira um usuário com somente letras e números";
       }
 
       return true;
-    },
-
-    submit() {
-      this.validateForm() && this.createAccount(this.form);
-    },
-
-    async createAccount(user) {
-      this.registering = true;
-
-      try {
-        const { data } = await AppApi.create_account(user);
-        this.validAccount(data);
-      } catch (error) {
-      } finally {
-        this.registering = false;
-      }
-    },
-
-    validAccount(data) {
-      if (data.created) {
-        this.redirectToIndex();
-      } else {
-        this.error = true;
-      }
-    },
-
-    redirectToIndex() {
-      this.$router.push({ name: "index" });
     }
   }
 };

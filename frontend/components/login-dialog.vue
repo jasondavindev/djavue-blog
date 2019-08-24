@@ -6,7 +6,7 @@
           <p class="title">Iniciar sessão</p>
         </v-card-title>
         <v-card-text>
-          <v-text-field label="Nome de usuário" required v-model="username"/>
+          <v-text-field label="Nome de usuário" required v-model="username" />
           <v-text-field
             label="Senha"
             type="password"
@@ -34,10 +34,11 @@
 
 <script>
 import AppApi from "~apijs";
+import { mapActions, mapGetters } from "vuex";
+import { AUTH_LOGIN, AUTH_SET_USER } from "~/store/actions.type";
 
 export default {
   data() {
-    console.log("data");
     return {
       visible: false,
       loading: false,
@@ -46,35 +47,35 @@ export default {
       error: false
     };
   },
+
+  computed: {
+    ...mapGetters(["currentUser"])
+  },
+
   methods: {
+    ...mapActions([AUTH_LOGIN]),
+
     open() {
       this.visible = true;
-      console.log("Open");
     },
 
     close() {
       this.visible = false;
-      console.log("Close");
     },
 
-    async login() {
+    login() {
       this.loading = true;
       this.error = false;
-      try {
-        const { data } = await AppApi.login(this.username, this.password);
 
-        if (data) {
-          this.$store.commit("SET_LOGGED_USER", data);
-          this.visible = false;
-          console.log("logged");
+      const { username, password } = this;
+
+      this[AUTH_LOGIN]({ username, password })
+        .then(user => {
+          this.close();
           this.$router.push({ name: "index" });
-        } else {
-          this.error = true;
-        }
-      } catch (error) {
-      } finally {
-        this.loading = false;
-      }
+        })
+        .catch(error => (this.error = true))
+        .finally(() => (this.loading = false));
     }
   }
 };

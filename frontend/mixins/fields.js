@@ -10,7 +10,7 @@ Vue.mixin({
 
 		logged() {
 			return (
-				!!this.$store.getters.logged_user || 'Você precisa estar logado para fazer um comentário'
+				!!this.$store.getters.currentUser || 'Você precisa estar logado para fazer um comentário'
 			);
 		},
 
